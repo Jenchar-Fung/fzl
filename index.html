@@ -1,28 +1,62 @@
 <!DOCTYPE html> 
-<html> <head> <meta charset="utf-8"> <title>Happy Birthday </title> </head> <body> <div id="hb_text" style="font-size:60px" > </div> </body> 
+<html> <head> <meta charset="utf-8"> <title>Happy Birthday </title> </head> 
+<body>
 
+<audio id="hb_music" src="dida.mp3" hidden="true" controls="controls" autoplay="autoplay" preload id="hb_music"></audio> 
+<div id="hb_text" style="font-size:60px" > </div> 
 
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+    function autoPlayAudio1() {
+        wx.config({
+            debug: false,
+            appId: '',
+            timestamp: 1,
+            nonceStr: '',
+            signature: '',
+            jsApiList: []
+        });
+        wx.ready(function() {
+            document.getElementById('hb_music').play();
+        });
+    }
+	autoPlayAudio1();
+</script>
 
-
-<audio id="hb_music" controls="controls" autoplay="autoplay" preload id="hb_music" hidden="true">
-<source src="dida.mp3" />
-</audio>
-
-<img id="btn" class="active" src="" alt="" />
-
-
+<script>
+(function() {
+  if (typeof WeixinJSBridge == "object" && typeof WeixinJSBridge.invoke == "function") {
+    handleFontSize();
+  } else {
+    if (document.addEventListener) {
+      document.addEventListener("WeixinJSBridgeReady", handleFontSize, false);
+    } else if (document.attachEvent) {
+      //IE浏览器，非W3C规范
+      document.attachEvent("onWeixinJSBridgeReady", handleFontSize);
+    }
+  }
+  function handleFontSize() {
+    // 设置网页字体为默认大小
+    WeixinJSBridge.invoke('setFontSizeCallback', { 'fontSize' : 0 });
+    // 重写设置网页字体大小的事件
+    WeixinJSBridge.on('menu:setfont', function() {
+      WeixinJSBridge.invoke('setFontSizeCallback', { 'fontSize' : 0 });
+    });
+  }
+})();
+</script>
 
 <script>
   let audio = document.getElementById('hb_music');
   let divTyping = document.getElementById('hb_text')
   let i = 0,
-    timer = 0,
-    str = '生日快乐!'
+  timer = 0,
+  str = '生日快乐!'
 
   function typing () {
     if (i <= str.length) {
       divTyping.innerHTML = str.slice(0, i++) + '_'
-      timer = setTimeout('typing()', 200)
+      timer = setTimeout('typing()', 300)
     }
     else {
       divTyping.innerHTML = str
@@ -37,24 +71,5 @@
 
   typing()
 </script> 
-
-
-<script>
-var audio = document.getElementById('hb_music');
-$("#btn").bind("touchstart", function bf() {
-if(audio !== null) {
-
-
-if(audio.paused) {
-audio.play(); 
-$("#btn").addClass("active")
-} else {
-audio.pause(); 
-$("#btn").removeClass("active")
-}
-}
-})
-</script>
-
-
+</body> 
 </html>
